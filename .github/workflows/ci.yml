@@ -1,0 +1,35 @@
+name: macOS CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Build and verify app bundle
+        run: |
+          ./build.sh
+          plutil -lint 'dist/MP3 Strip Rebuild.app/Contents/Info.plist'
+          codesign --verify --deep --strict 'dist/MP3 Strip Rebuild.app'
+      - name: Ensure FFmpeg is available
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            HOMEBREW_NO_AUTO_UPDATE=1 brew install ffmpeg
+          fi
+      - name: Run integration tests using generated MP3s
+        run: python3 tests/verify_library.py

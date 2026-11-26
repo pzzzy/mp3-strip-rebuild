@@ -1,0 +1,9 @@
+MP3 Strip Rebuild is an independent macOS application inspired by MP3 Strip,
+a Classic Mac OS product by Kanex Group Inc. It is not affiliated with,
+sponsored by, or endorsed by Kanex Group Inc. or Apple.
+
+The MIT license applies to this repository's source and documentation. It does
+not grant rights to the original product, its trademarks, code, resource forks,
+artwork, or manuals. No original application, assets, or raw decompiler output
+are distributed here. The test uses generated audio; FFmpeg is a local test tool,
+not bundled software or an application runtime dependency.
